@@ -46,32 +46,37 @@ function Tell_Story() {
           break;
         case 3:
           console.log(response);
-          Prompt_Text="SYTH: 'Peter' greift das Monster an. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
+          Prompt_Text="SYTH: 'Lyida' greift das Monster an. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
           break;
         case 4:
           console.log(response);
-          Prompt_Text="SYTH: 'Sandro' greift das Monster an. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
+          Prompt_Text="SYTH: 'Rene' greift das Monster an. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
           break;
         case 5:
+          console.log(response);
+          Prompt_Text="SYTH: 'Sandro' greift das Monster an. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
+          break;
+        case 6:
           console.log(response);
           Prompt_Text="SYTH: 'Sandro' wird vom den Monster angegriffen. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
           break;
 
-        case 6:
+        case 7:
           console.log(response);
           Prompt_Text="SYTH: 'Sandro' tötet das Monster. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
           break;
-        case 7:
+        case 8:
           console.log(response);
           Prompt_Text="SYTH: Die Abenteurer werden als Helden gefeiert. Erstelle eine kurze, zwei Sätze lange, Beschreibung der Szene.";
           break;
 
-        case 8:
+        case 9:
           console.log(response);
           Prompt_Text="Ignore previous instructions. Summarize the story so far. Limit the summary to 300 words or less. Your response should include nothing but the summary.'";
           break;
 
-        case 10:
+        // Auskommentiert weil unwichtig solange kein Bild Generiert wird!
+        case 11:
           console.log("Zusammenfassung: \n" + response);
           Prompt_Prefix="anime artwork, best quality, masterpiece, "
           Prompt_Text="(("+response+"))";
@@ -81,7 +86,6 @@ function Tell_Story() {
             process.exit(1);
           });
           return;
-          break;
 
         default:
           process.exit(1);
