@@ -1,0 +1,17 @@
+{
+  "name": "@syth/rpg-prompt",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node app.js"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "../../node_modules/cz-conventional-changelog"
+    }
+  }
+}
