@@ -32,7 +32,7 @@ async function dotest() {
   var story = await db.RPG_Story.query().where("owner", Owner);
   for (var i = 0; i < story.length ; i++ ) {
     //console.log((i+1) + ". "+story[i].user+" ["+story[i].type+"]: " + story[i].message)
-    console.log((i+1) + ": " + story[i].message.length + " - " + story[i].message);
+    console.log((i+1) + ": ["+story[i].type+"]" + story[i].message.length + " - " + story[i].message);
   }
 
   process.exit();
