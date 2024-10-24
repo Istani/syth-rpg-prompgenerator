@@ -1,11 +1,11 @@
 var text_ai = require("@istani/groq-cloud.ai");
-var image_ai = require("@istani/groq-cloud.ai");
+var image_ai = require("@istani/horde.ai");
 
 var debug = require("@istani/debug")(require('./package.json').name);
 var db = require("@syth/database");
 
 var sleep_for_each=1000;
-var token_length=3000;
+var token_length=6000;
 
 var Prompt_Prefix = 
   "You are BOT in this fictional medieval fantasy roleplay with SYTH.\n" + 
@@ -38,7 +38,6 @@ async function GetStoryPoints(Owner) {
     length = Prompt_Prefix.length + Text_Prompt.length;
   }
 
-  // Todo: Verhindern das der Prompt zu lange wird!
   if (length>token_length) {
     debug.error("Text Prompt too Long! " + length + " Characters");
     Text_Prompt="";
@@ -201,28 +200,53 @@ exports.Use_Item = async function Use_Item(Owner, User, Itemname) {
   return response;
 }
 
-exports.Image_Story = async function Image_Story(Owner) {
+exports.Summary_Story = async function Summary_Story(Owner) {
   var Text_Prompt=await GetStoryPoints(Owner);
-  Text_Prompt+="SYTH: Ignore previous instructions. Summarize the story so far. Limit the summary to 200 characters or less. Your response should include nothing but the summary.\n";
+  Text_Prompt+="SYTH: Ignore previous instructions. Summarize the story. Limit the summary to 220 characters or less. Your response should include nothing but the detailed summary.\n";
 
   var p = new Promise((resolve, reject) => {
     text_ai.TextGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
   });
-  var text_response=await p;
+  var response=await p;
   
-  var data={'owner': Owner, 'type':"story", 'user': "SYTH", 'message':text_response};
+  // ToDo: Change Table for Longer Text: table.text('message','text')
+  var data={'owner': Owner, 'type':"story", 'user': "SYTH", 'message':response};
   await db.RPG_Story.query().insert(data);
 
+  await sleep(sleep_for_each);
+  return response;
+}
+
+exports.Image_Story = async function Image_Story(Owner) {
+  var text_response = await exports.Summary_Story(Owner);
   Text_Prompt="anime artwork, best quality, masterpiece, (("+text_response+"))";
 
   var p2 = new Promise((resolve, reject) => {
     image_ai.ImageGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
   });
-  var response=await p2;
-  
-  var data={'owner': Owner, 'type':"image", 'user': "SYTH", 'message':response};
-  await db.RPG_Story.query().insert(data);
+  var img_response=await p2;
 
-  await sleep(sleep_for_each);
-  return response;
+  // Download file?
+  var p3 = new Promise((resolve, reject) => {
+    const http = require('https'); // 'http' for http:// URLs or 'https' for https:// URLs
+    const fs = require('fs');
+    const path = require('path');
+    const moment = require("moment");
+
+    var dwn_path=path.join(__dirname , 'data', Owner+"_"+moment().format("x")+".png");
+    const file = fs.createWriteStream(dwn_path);
+
+    const request = http.get(img_response, function(response) {
+      response.pipe(file);
+      file.on("finish", async () => {
+          file.close();
+          var data={'owner': Owner, 'type':"image", 'user': "SYTH", 'message':dwn_path};
+          await db.RPG_Story.query().insert(data);
+
+          await sleep(sleep_for_each);
+          resolve(dwn_path);
+      });
+    });
+  });
+  return await p3;
 }

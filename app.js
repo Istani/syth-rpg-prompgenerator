@@ -1,55 +1,32 @@
 var rpg_text = require("@syth/rpg-prompt");
 
 async function dotest() {
-  var count=1;
-  var text="";
-  var bild="";
   var Owner = "Test";
-
   // --------------------------
 
-  text = await rpg_text.Start_Story(Owner);
-  count++;
+  await rpg_text.Start_Story(Owner);
+  await rpg_text.Spawn_Monster(Owner);
 
-  text = await rpg_text.Spawn_Monster(Owner);
-  count++;
-
-  for (var i = 0 ; i < 1; i++) {
-    text = await rpg_text.Attack_Monster(Owner, "Sascha");
-    count++;
-
-    text = await rpg_text.Attack_Monster(Owner, "BobSanGG");
-    count++;
-
-    text = await rpg_text.Attack_Monster(Owner, "Yunkeed");
-    count++;
-
-    text = await rpg_text.Attack_Monster(Owner, "BobSanGG");
-    count++;
-
-    text = await rpg_text.Attack_Monster(Owner, "Sascha");
-    count++;
-
-    text = await rpg_text.Defence_Monster(Owner, "BobSanGG");
-    count++;
-
-    text = await rpg_text.Collect_Item(Owner, "BobSanGG", "Heilkraut");
-    count++;
-
-    text = await rpg_text.Use_Item(Owner, "BobSanGG", "Heilkraut");
-    count++;
+  for (var i = 0 ; i < 7; i++) {
+    await rpg_text.Attack_Monster(Owner, "Sascha");
+    await rpg_text.Attack_Monster(Owner, "BobSanGG");
+    await rpg_text.Attack_Monster(Owner, "Yunkeed");
+    await rpg_text.Attack_Monster(Owner, "BobSanGG");
+    await rpg_text.Attack_Monster(Owner, "Sascha");
+    await rpg_text.Defence_Monster(Owner, "BobSanGG");
+    await rpg_text.Attack_Monster(Owner, "Sascha");
+    await rpg_text.Attack_Monster(Owner, "Yunkeed");
+    await rpg_text.Attack_Monster(Owner, "BobSanGG");
+    await rpg_text.Attack_Monster(Owner, "Lydia");
+    await rpg_text.Attack_Monster(Owner, "Rene");
+    await rpg_text.Defence_Monster(Owner, "BobSanGG");
+    await rpg_text.Collect_Item(Owner, "BobSanGG", "Heilkraut");
+    await rpg_text.Use_Item(Owner, "BobSanGG", "Heilkraut");
   }
 
-  text = await rpg_text.Kill_Monster(Owner, "BobSanGG");
-  count++;
-
-  text = await rpg_text.Party_Heros(Owner);
-  count++;
-
-  /*
-  bild = await rpg_text.Image_Story(Owner);
-  console.log(bild);
-  */
+  await rpg_text.Kill_Monster(Owner, "BobSanGG");
+  await rpg_text.Party_Heros(Owner);
+  await rpg_text.Image_Story(Owner);
 
   var db = require("@syth/database");
   var story = await db.RPG_Story.query().where("owner", Owner);
