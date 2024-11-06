@@ -250,3 +250,83 @@ exports.Image_Story = async function Image_Story(Owner) {
   });
   return await p3;
 }
+
+
+exports.Failed_Collect_Item = async function Failed_Collect_Item(Owner, User) {
+  var Text_Prompt=await GetStoryPoints(Owner);
+  Text_Prompt+="SYTH: "+User+" konnte kein Item finden. " + Prompt_Suffix + "\n";
+
+  var p = new Promise((resolve, reject) => {
+    text_ai.TextGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
+  });
+  var response=await p;
+  
+  //var data={'owner': Owner, 'type':"harvest", 'user': User, 'message':response};
+  //await db.RPG_Story.query().insert(data);
+
+  await sleep(sleep_for_each);
+  return response;
+}
+exports.Failed_Use_Item = async function Failed_Use_Item(Owner, User, Itemname) {
+  var Text_Prompt=await GetStoryPoints(Owner);
+  Text_Prompt+="SYTH: "+User+" hat kein "+Itemname+" Item zum bennutzen. " + Prompt_Suffix + "\n";
+
+  var p = new Promise((resolve, reject) => {
+    text_ai.TextGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
+  });
+  var response=await p;
+  
+  //var data={'owner': Owner, 'type':"use", 'user': User, 'message':response};
+  //await db.RPG_Story.query().insert(data);
+
+  await sleep(sleep_for_each);
+  return response;
+}
+
+exports.Failed_Spawn_Monster = async function Failed_Spawn_Monster(Owner) {
+  var Text_Prompt=await GetStoryPoints(Owner);
+  Text_Prompt+="SYTH: Im Moment ist alles ruhig, es ist kein Monster zu sehen. " + Prompt_Suffix + "\n";
+
+  var p = new Promise((resolve, reject) => {
+    text_ai.TextGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
+  });
+  var response=await p;
+
+  //var data={'owner': Owner, 'type':"spawn", 'user': "SYTH", 'message':response};
+  //await db.RPG_Story.query().insert(data);
+
+  await sleep(sleep_for_each);
+  return response;
+}
+
+exports.Failed_Attack_Monster = async function Failed_Attack_Monster(Owner, User) {
+  var Text_Prompt=await GetStoryPoints(Owner);
+  Text_Prompt+="SYTH: "+User+" versucht das Monster anzugreifen, kann sich wegen Verletzungen aber nicht bewegen. " + Prompt_Suffix + "\n";
+
+  var p = new Promise((resolve, reject) => {
+    text_ai.TextGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
+  });
+  var response=await p;
+
+  //var data={'owner': Owner, 'type':"attack", 'user': User, 'message':response};
+  //await db.RPG_Story.query().insert(data);
+
+  await sleep(sleep_for_each);
+  return response;
+}
+
+exports.Cooldown = async function Cooldown(Owner, User) {
+  var Text_Prompt=await GetStoryPoints(Owner);
+  Text_Prompt+="SYTH: "+User+" ist noch mit der vorherigen Aktion beschäftigt. " + Prompt_Suffix + "\n";
+
+  var p = new Promise((resolve, reject) => {
+    text_ai.TextGeneration(Prompt_Prefix + Text_Prompt+" BOT:", (response) => { resolve(response); });
+  });
+  var response=await p;
+
+  //var data={'owner': Owner, 'type':"attack", 'user': User, 'message':response};
+  //await db.RPG_Story.query().insert(data);
+
+  await sleep(sleep_for_each);
+  return response;
+}
